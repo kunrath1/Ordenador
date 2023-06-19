@@ -1,5 +1,6 @@
-#ifndef ordenadores.h
-#define ordenadores.h
+#ifndef ORDENADORES_H
+#define ORDENADORES_H
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
