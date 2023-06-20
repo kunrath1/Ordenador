@@ -14,12 +14,12 @@ using namespace std;
 void selectionSort(vector<int>& arr) {
     int n = arr.size();
     for (int i = 0; i < n - 1; ++i) {
-        int minIndex = i;
+        int indice = i;
         for (int j = i + 1; j < n; ++j) {
-            if (arr[j] < arr[minIndex])
-                minIndex = j;
+            if (arr[j] < arr[indice])
+                indice = j;
         }
-        swap(arr[i], arr[minIndex]);
+        swap(arr[i], arr[indice]);
     }
 }
 
@@ -41,24 +41,25 @@ void bubbleSort(vector<int>& arr) {
 }
 
 // Algoritmo de Ordenação por Intercalação (Merge Sort)
-void merge(vector<int>& arr, int left, int middle, int right) {
-    int n1 = middle - left + 1;
-    int n2 = right - middle;
+void merge(vector<int>& arr, int esq, int meio, int dir) {
+    int n1 = meio - esq + 1;
+    int n2 = dir - meio;
 
     vector<int> L(n1), R(n2);
 
     for (int i = 0; i < n1; ++i)
-        L[i] = arr[left + i];
+        L[i] = arr[esq + i];
     for (int j = 0; j < n2; ++j)
-        R[j] = arr[middle + 1 + j];
+        R[j] = arr[meio + 1 + j];
 
-    int i = 0, j = 0, k = left;
+    int i = 0, j = 0, k = esq;
 
     while (i < n1 && j < n2) {
         if (L[i] <= R[j]) {
             arr[k] = L[i];
             ++i;
-        } else {
+        }
+        else {
             arr[k] = R[j];
             ++j;
         }
@@ -78,14 +79,14 @@ void merge(vector<int>& arr, int left, int middle, int right) {
     }
 }
 
-void mergeSort(vector<int>& arr, int left, int right) {
-    if (left < right) {
-        int middle = left + (right - left) / 2;
+void mergeSort(vector<int>& arr, int esq, int dir) {
+    if (esq < dir) {
+        int meio = esq + (dir - esq) / 2;
 
-        mergeSort(arr, left, middle);
-        mergeSort(arr, middle + 1, right);
+        mergeSort(arr, esq, meio);
+        mergeSort(arr, meio + 1, dir);
 
-        merge(arr, left, middle, right);
+        merge(arr, esq, meio, dir);
     }
 }
 
@@ -104,7 +105,7 @@ void insertionSort(vector<int>& arr) {
 }
 
 // Função para gerar um vetor aleatório
-vector<int> generateRandomVector(int size) {
+vector<int> geradorVetAleatorios(int size) {
     vector<int> arr(size);
     for (int i = 0; i < size; ++i) {
         arr[i] = rand() % 100; // Altere o intervalo dos números aleatórios conforme necessário
@@ -113,19 +114,19 @@ vector<int> generateRandomVector(int size) {
 }
 
 // Função para copiar um vetor
-vector<int> copyVector(const vector<int>& arr) {
+vector<int> copiarVet(const vector<int>& arr) {
     vector<int> copy(arr.size());
     copy = arr;
     return copy;
 }
 
 // Função para calcular a diferença de tempo em milissegundos
-long long getElapsedTime(const chrono::high_resolution_clock::time_point& start, const chrono::high_resolution_clock::time_point& end) {
-    return chrono::duration_cast<chrono::milliseconds>(end - start).count();
+long long tempoCorrido(const chrono::high_resolution_clock::time_point& comeco, const chrono::high_resolution_clock::time_point& end) {
+    return chrono::duration_cast<chrono::milliseconds>(end - comeco).count();
 }
 
 // Função para imprimir os elementos de um vetor
-void printVector(const vector<int>& arr) {
+void exibirVet(const vector<int>& arr) {
     for (int num : arr) {
         cout << num << " ";
     }

@@ -15,106 +15,108 @@ int main() {
     cin >> M;
     cout << "Digite o tamanho de cada vetor (N): ";
     cin >> N;
-    cout << "Digite o número de vezes a executar cada algoritmo (X): ";
+    cout << "Digite o numero de vezes a executar cada algoritmo (X): ";
     cin >> X;
 
     vector<vector<int>> vectors(M);
     vector<long long> elapsedTimeSelection(X), elapsedTimeBubble(X), elapsedTimeMerge(X), elapsedTimeInsertion(X);
 
     for (int i = 0; i < M; ++i) {
-        vectors[i] = generateRandomVector(N);
+        vectors[i] = geradorVetAleatorios(N);
     }
 
-    vector<int> bestCase = generateRandomVector(N);
-    sort(bestCase.begin(), bestCase.end());
+    vector<int> melhorCaso = geradorVetAleatorios(N);
+    sort(melhorCaso.begin(), melhorCaso.end());
 
-    vector<int> worstCase = generateRandomVector(N);
-    sort(worstCase.begin(), worstCase.end(), greater<int>());
+    vector<int> piorCaso = geradorVetAleatorios(N);
+    sort(piorCaso.begin(), piorCaso.end(), greater<int>());
 
     for (int i = 0; i < X; ++i) {
         for (int j = 0; j < M; ++j) {
             vector<int> arr;
 
             if (j == 0) {
-                arr = bestCase;
-            } else if (j == 1) {
-                arr = worstCase;
-            } else {
-                arr = copyVector(vectors[j - 2]);
+                arr = melhorCaso;
+            }
+            else if (j == 1) {
+                arr = piorCaso;
+            }
+            else {
+                arr = copiarVet(vectors[j - 2]);
             }
 
-            chrono::high_resolution_clock::time_point start, end;
+            chrono::high_resolution_clock::time_point comeco, fim;
 
             // Algoritmo de Ordenação por Seleção
-            start = chrono::high_resolution_clock::now();
+            comeco = chrono::high_resolution_clock::now();
             selectionSort(arr);
-            end = chrono::high_resolution_clock::now();
-            elapsedTimeSelection[i] = getElapsedTime(start, end);
+            fim = chrono::high_resolution_clock::now();
+            elapsedTimeSelection[i] = tempoCorrido(comeco, fim);
 
             // Algoritmo de Ordenação por Trocas (Bubble Sort)
-            arr = copyVector(vectors[j]);
-            start = chrono::high_resolution_clock::now();
+            arr = copiarVet(vectors[j]);
+            comeco = chrono::high_resolution_clock::now();
             bubbleSort(arr);
-            end = chrono::high_resolution_clock::now();
-            elapsedTimeBubble[i] = getElapsedTime(start, end);
+            fim = chrono::high_resolution_clock::now();
+            elapsedTimeBubble[i] = tempoCorrido(comeco, fim);
 
             // Algoritmo de Ordenação por Intercalação (Merge Sort)
-            arr = copyVector(vectors[j]);
-            start = chrono::high_resolution_clock::now();
+            arr = copiarVet(vectors[j]);
+            comeco = chrono::high_resolution_clock::now();
             mergeSort(arr, 0, arr.size() - 1);
-            end = chrono::high_resolution_clock::now();
-            elapsedTimeMerge[i] = getElapsedTime(start, end);
+            fim = chrono::high_resolution_clock::now();
+            elapsedTimeMerge[i] = tempoCorrido(comeco, fim);
 
             // Algoritmo de Ordenação por Inserção
-            arr = copyVector(vectors[j]);
-            start = chrono::high_resolution_clock::now();
+            arr = copiarVet(vectors[j]);
+            comeco = chrono::high_resolution_clock::now();
             insertionSort(arr);
-            end = chrono::high_resolution_clock::now();
-            elapsedTimeInsertion[i] = getElapsedTime(start, end);
+            fim = chrono::high_resolution_clock::now();
+            elapsedTimeInsertion[i] = tempoCorrido(comeco, fim);
         }
     }
 
     // Cálculo das estatísticas
-    long long maxSelection = *max_element(elapsedTimeSelection.begin(), elapsedTimeSelection.end());
-    long long minSelection = *min_element(elapsedTimeSelection.begin(), elapsedTimeSelection.end());
-    double avgSelection = accumulate(elapsedTimeSelection.begin(), elapsedTimeSelection.end(), 0.0) / X;
+    long long maiorSelection = *max_element(elapsedTimeSelection.begin(), elapsedTimeSelection.end());
+    long long menorSelection = *min_element(elapsedTimeSelection.begin(), elapsedTimeSelection.end());
+    double mediaSelection = accumulate(elapsedTimeSelection.begin(), elapsedTimeSelection.end(), 0.00000) / X;
 
-    long long maxBubble = *max_element(elapsedTimeBubble.begin(), elapsedTimeBubble.end());
-    long long minBubble = *min_element(elapsedTimeBubble.begin(), elapsedTimeBubble.end());
-    double avgBubble = accumulate(elapsedTimeBubble.begin(), elapsedTimeBubble.end(), 0.0) / X;
+    long long maiorBubble = *max_element(elapsedTimeBubble.begin(), elapsedTimeBubble.end());
+    long long menorBubble = *min_element(elapsedTimeBubble.begin(), elapsedTimeBubble.end());
+    double mediaBubble = accumulate(elapsedTimeBubble.begin(), elapsedTimeBubble.end(), 0.00000) / X;
 
-    long long maxMerge = *max_element(elapsedTimeMerge.begin(), elapsedTimeMerge.end());
-    long long minMerge = *min_element(elapsedTimeMerge.begin(), elapsedTimeMerge.end());
-    double avgMerge = accumulate(elapsedTimeMerge.begin(), elapsedTimeMerge.end(), 0.0) / X;
+    long long maiorMerge = *max_element(elapsedTimeMerge.begin(), elapsedTimeMerge.end());
+    long long menorMerge = *min_element(elapsedTimeMerge.begin(), elapsedTimeMerge.end());
+    double mediaMerge = accumulate(elapsedTimeMerge.begin(), elapsedTimeMerge.end(), 0.00000) / X;
 
-    long long maxInsertion = *max_element(elapsedTimeInsertion.begin(), elapsedTimeInsertion.end());
-    long long minInsertion = *min_element(elapsedTimeInsertion.begin(), elapsedTimeInsertion.end());
-    double avgInsertion = accumulate(elapsedTimeInsertion.begin(), elapsedTimeInsertion.end(), 0.0) / X;
+    long long maiorInsertion = *max_element(elapsedTimeInsertion.begin(), elapsedTimeInsertion.end());
+    long long menorInsertion = *min_element(elapsedTimeInsertion.begin(), elapsedTimeInsertion.end());
+    double mediaInsertion = accumulate(elapsedTimeInsertion.begin(), elapsedTimeInsertion.end(), 0.00000) / X;
 
     // Exibição dos resultados
     cout << "Resultados:" << endl;
-    cout << "Algoritmo de Ordenação por Seleção:" << endl;
-    cout << "Maior tempo: " << maxSelection << " ms" << endl;
-    cout << "Menor tempo: " << minSelection << " ms" << endl;
-    cout << "Média: " << avgSelection << " ms" << endl;
+    cout << "Algoritmo de Ordenacao por Selecao:" << endl;
+    cout << "Maior tempo: " << maiorSelection << " ms" << endl;
+    cout << "Menor tempo: " << menorSelection << " ms" << endl;
+    cout << "Media: " << mediaSelection << " ms" << endl;
     cout << endl;
 
-    cout << "Algoritmo de Ordenação por Trocas (Bubble Sort):" << endl;
-    cout << "Maior tempo: " << maxBubble << " ms" << endl;
-    cout << "Menor tempo: " << minBubble << " ms" << endl;
-    cout << "Média: " << avgBubble << " ms" << endl;
+    cout << "Algoritmo de Ordenacao por Trocas (Bubble Sort):" << endl;
+    cout << "Maior tempo: " << maiorBubble << " ms" << endl;
+    cout << "Menor tempo: " << menorBubble << " ms" << endl;
+    cout << "Media: " << mediaBubble << " ms" << endl;
     cout << endl;
 
-    cout << "Algoritmo de Ordenação por Intercalação (Merge Sort):" << endl;
-    cout << "Maior tempo: " << maxMerge << " ms" << endl;
-    cout << "Menor tempo: " << minMerge << " ms" << endl;
-    cout << "Média: " << avgMerge << " ms" << endl;
+    cout << "Algoritmo de Ordenacao por Intercalacao (Merge Sort):" << endl;
+    cout << "Maior tempo: " << maiorMerge << " ms" << endl;
+    cout << "Menor tempo: " << menorMerge << " ms" << endl;
+    cout << "Media: " << mediaMerge << " ms" << endl;
     cout << endl;
 
-    cout << "Algoritmo de Ordenação por Inserção:" << endl;
-    cout << "Maior tempo: " << maxInsertion << " ms" << endl;
-    cout << "Menor tempo: " << minInsertion << " ms" << endl;
-    cout << "Média: " << avgInsertion << " ms" << endl;
+    cout << "Algoritmo de Ordenacao por Insercao:" << endl;
+    cout << "Maior tempo: " << maiorInsertion << " ms" << endl;
+    cout << "Menor tempo: " << menorInsertion << " ms" << endl;
+    cout << "Media: " << mediaInsertion << " ms" << endl;
 
     return 0;
 }
